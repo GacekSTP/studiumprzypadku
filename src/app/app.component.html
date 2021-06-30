@@ -1,0 +1,67 @@
+<mat-toolbar color="primary">
+  <mat-icon>local_fire_department</mat-icon>
+  <span>Projekt</span>
+</mat-toolbar>
+
+<div class="container-wrapper">
+
+  <div class="content-wrapper">
+    <button (click)="newTask()" mat-button>
+      <mat-icon>add</mat-icon> Dodaj zadanie
+    </button>
+
+    <div class="container-wrapper">
+      <div class="container">
+
+      </div>
+  </div>
+
+  <div class="container">
+    <h2>Do zrobienia</h2>
+
+    <mat-card
+    cdkDropList
+    id="todo"
+    #todoList="cdkDropList"
+    [cdkDropListData]="todo |async "
+    [cdkDropListConnectedTo]="[done, inProgress]"
+    (cdkDropListDropped)="drop($event)"
+    class="list"
+  >
+    <p class="empty-label" *ngIf="(todo | async)?.length === 0">Pusta lista</p>
+    <app-task (edit)="editTask('todo', $event)" *ngFor="let task of todo |async " cdkDrag [task]="task"></app-task>
+  </mat-card>
+  </div>
+
+  <div class="container">
+    <h2>W trakcie</h2>
+
+    <mat-card
+    cdkDropList
+    id="inProgress"
+    #inProgressList="cdkDropList"
+    [cdkDropListData]="inProgress | async"
+    [cdkDropListConnectedTo]="[todoList, done]"
+    (cdkDropListDropped)="drop($event)"
+    class="list">
+    <p class="empty-label" *ngIf="(inProgress | async)?.length === 0">Pusta lista</p>
+    <app-task (edit)="editTask('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag [task]="task"></app-task>
+  </mat-card>
+
+  </div>
+
+  <div class="container">
+    <h2>Zakończone</h2>
+    ...
+  </div>
+</div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/8.6.8/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/8.6.8/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
